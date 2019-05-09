@@ -14,14 +14,13 @@ let win_comp = [['1', '2', '3'],
 
 $(function() {
   
-  'use strict';  // to use strict rules of javascript syntax .. i guess!!
   
   // this function is to force  the  game to restart after each conclusion
   $('#reset').on('click',  function (e){
     gameRestart();
   });
   
-  // a click even for the player to click a box
+  // a click event for the player to click a box
   $("#board").on('click', 'li', function (e){
     
     let _this = $(this);
@@ -29,20 +28,20 @@ $(function() {
     // this is to ristrict players from clicking on an already used cell
     if ( moves < 9 && _this.hasClass('selected') ) {
       swal("Can't click this cell, try another :0");
-      return false;
+      return false; // to leave delegation
     }
     
-    // if a player selected a good 
+    // if a player selected a playable cell this what will happen
     _this.addClass('selected');
-    moves++;
+    moves++; // to track moves
  
     if (_this.text() == "" || _this.text() == undefined) {
       _this.text(turn);
       
-      //track player click
+      //track a player click
       if (turn == "X"){
-        xscore.push(this.id[4]);
-        xscore.sort();
+        xscore.push(this.id[4]); // i tried to reigister score by using the last digit of  the id "spot1"
+        xscore.sort(); // susing for the winninfg combinations
         
       }
       else {
@@ -55,7 +54,7 @@ $(function() {
         swal(turn+" User wins!");
         gameRestart();
       }
-      // draw
+      // check in case of a tie
       else if(moves == 9) {
         swal(" Tie Game!");
         gameRestart();
@@ -63,7 +62,7 @@ $(function() {
       
       
       // Next player turn
-      if (turn == "X")
+      if (turn == "X") // this to enterchange b/w "X" and "O"
         turn = "O";
       else
         turn = "X";
@@ -79,7 +78,7 @@ $(function() {
 });
 
 /* check if user won */ 
-const gameRestart = function () {
+const gameRestart = function () {   // this the funciton for restarting the game when it's called
   $('li').text('').removeClass('selected');
   xscore = [],
   oscore = [],
@@ -87,9 +86,9 @@ const gameRestart = function () {
 }
 /* check if user won */ 
 const isWiningComp = function ( turn ) {
-  for (let i = 0; i <= win_comp.length - 1; i++) {
-    let wpTest = win_comp[i];
-    let a1 = wpTest[0],
+  for (let i = 0; i <= win_comp.length - 1; i++) { //  loop that goes through the array inside the the main array.
+    let wpTest = win_comp[i]; 
+    let a1 = wpTest[0], //   
         a2 = wpTest[1],
         a3 = wpTest[2];
         
@@ -99,12 +98,7 @@ const isWiningComp = function ( turn ) {
       userSquaresArr = oscore;
     
     if ((userSquaresArr.includes(a1)) && (userSquaresArr.includes(a2)) && (userSquaresArr.includes(a3))) {
-      
-        console.log(" a1: "+a1+" wpTest[0]: "+wpTest[0]+" a2: "+a2+" wpTest[1]: "+wpTest[1]+
-        " a3: "+a3+" wpTest[2]: "+wpTest[2]);
-        
-        console.log("user "+turn+" has played a winning pattern!");
-        return true;
+            return true;
     } 
   }
 }
